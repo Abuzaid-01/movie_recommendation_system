@@ -19,7 +19,6 @@
                 </div>
                 <nav class="nav-links">
                     <a href="#home" class="nav-link active">Home</a>
-                    <a href="#search" class="nav-link">Search</a>
                     <a href="#recommendations" class="nav-link">Recommendations</a>
                     <a href="#trending" class="nav-link">Trending</a>
                 </nav>
@@ -40,32 +39,32 @@
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Discover Your Next Favorite Movie</h1>
-                <p class="hero-subtitle">Get personalized movie recommendations based on your preferences and similar films</p>
+                <p class="hero-subtitle">Search from 3,363+ movies and get personalized AI recommendations</p>
                 <div class="hero-search">
                     <div class="search-container">
-                        <input type="text" id="hero-search" placeholder="Search for a movie..." class="search-input">
+                        <input type="text" id="hero-search" placeholder="Search for a movie or browse all movies..." class="search-input">
                         <div class="search-dropdown" id="hero-dropdown"></div>
                         <button class="search-btn" id="hero-search-btn">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
+                    <p class="search-hint">
+                        <i class="fas fa-lightbulb"></i>
+                        Start typing to see suggestions or click to browse all movies
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Search Section -->
-    <section id="search" class="search-section">
+    <!-- Search Results Section (Hidden by default) -->
+    <section id="search-results-section" class="search-results-section" style="display: none;">
         <div class="container">
-            <h2 class="section-title">Search Movies</h2>
-            <div class="search-form">
-                <div class="search-container">
-                    <input type="text" id="movie-search" placeholder="Type movie name..." class="search-input">
-                    <div class="search-dropdown" id="search-dropdown"></div>
-                    <button class="search-btn" id="search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+            <div class="search-results-header">
+                <h2 class="section-title">Search Results</h2>
+                <button class="clear-search-btn" id="clear-search-btn">
+                    <i class="fas fa-times"></i> Clear Search
+                </button>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -96,7 +95,7 @@
                     </select>
                 </div>
             </div>
-            <div class="recommendations-results" id="recommendations-results"></div>
+            <div class="recommendations-results" id="recommendations-results" style="display: none;"></div>
         </div>
     </section>
 

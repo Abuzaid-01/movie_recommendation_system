@@ -28,16 +28,23 @@ class MovieApp {
 
         // Search inputs with dropdown
         this.setupSearchWithDropdown('hero-search', 'hero-dropdown');
-        this.setupSearchWithDropdown('movie-search', 'search-dropdown');
         this.setupSearchWithDropdown('recommendation-input', 'recommendation-dropdown');
 
-        // Search buttons
+        // Clear recommendations when input is cleared
+        document.getElementById('recommendation-input').addEventListener('input', (e) => {
+            if (e.target.value.trim() === '') {
+                this.clearRecommendations();
+            }
+        });
+
+        // Search button
         document.getElementById('hero-search-btn').addEventListener('click', () => {
             this.searchMovies(document.getElementById('hero-search').value);
         });
 
-        document.getElementById('search-btn').addEventListener('click', () => {
-            this.searchMovies(document.getElementById('movie-search').value);
+        // Clear search button
+        document.getElementById('clear-search-btn').addEventListener('click', () => {
+            this.clearSearch();
         });
 
         document.getElementById('recommendation-btn').addEventListener('click', () => {
@@ -77,7 +84,7 @@ class MovieApp {
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     const inputId = input.id;
-                    if (inputId === 'hero-search' || inputId === 'movie-search') {
+                    if (inputId === 'hero-search') {
                         this.searchMovies(input.value);
                     } else if (inputId === 'recommendation-input') {
                         this.getRecommendations();
@@ -305,6 +312,30 @@ class MovieApp {
         modalSearch.focus();
     }
 
+    clearSearch() {
+        // Clear the search input
+        document.getElementById('hero-search').value = '';
+        
+        // Hide the search results section
+        const searchSection = document.getElementById('search-results-section');
+        searchSection.style.display = 'none';
+        
+        // Scroll back to hero section
+        document.getElementById('home').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        
+        // Clear any dropdowns
+        this.hideAllDropdowns();
+    }
+
+    clearRecommendations() {
+        const resultsContainer = document.getElementById('recommendations-results');
+        resultsContainer.style.display = 'none';
+        resultsContainer.innerHTML = '';
+    }
+
     showDropdown(dropdown) {
         this.hideAllDropdowns();
         dropdown.classList.add('show');
@@ -392,10 +423,12 @@ class MovieApp {
             const response = await fetch(`${this.API_BASE}/movies/search?q=${encodeURIComponent(query.trim())}&limit=20`);
             const data = await response.json();
             
-            this.displaySearchResults(data.movies || []);
+            this.displaySearchResults(data.movies || [], query);
             
-            // Scroll to search results
-            document.getElementById('search-results').scrollIntoView({ 
+            // Show search results section and scroll to it
+            const searchSection = document.getElementById('search-results-section');
+            searchSection.style.display = 'block';
+            searchSection.scrollIntoView({ 
                 behavior: 'smooth', 
                 block: 'start' 
             });
@@ -472,7 +505,7 @@ class MovieApp {
         }
     }
 
-    displaySearchResults(movies) {
+    displaySearchResults(movies, query = '') {
         const resultsContainer = document.getElementById('search-results');
         
         if (!movies || movies.length === 0) {
@@ -480,7 +513,7 @@ class MovieApp {
                 <div class="error-message">
                     <i class="fas fa-search"></i>
                     <h3>No movies found</h3>
-                    <p>Try searching with different keywords</p>
+                    <p>Try searching with different keywords or browse all movies from the search dropdown</p>
                 </div>
             `;
             return;
@@ -488,9 +521,9 @@ class MovieApp {
 
         const grid = this.createMovieGrid(movies);
         resultsContainer.innerHTML = `
-            <h3 style="margin-bottom: 2rem; color: var(--text-light);">
-                Found ${movies.length} movies
-            </h3>
+            <div class="search-results-header-info">
+                <h3>Found ${movies.length} movies${query ? ` for "${query}"` : ''}</h3>
+            </div>
             ${grid}
         `;
     }
@@ -499,6 +532,7 @@ class MovieApp {
         const resultsContainer = document.getElementById('recommendations-results');
         
         if (!recommendations || recommendations.length === 0) {
+            resultsContainer.style.display = 'block';
             resultsContainer.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -509,7 +543,8 @@ class MovieApp {
             return;
         }
 
-        const grid = this.createMovieGrid(recommendations, true);
+        const grid = this.createMovieGrid(recommendations, false);
+        resultsContainer.style.display = 'block';
         resultsContainer.innerHTML = `
             <h3 style="margin-bottom: 2rem; color: var(--text-light);">
                 Movies similar to "${basedOn}"
@@ -533,6 +568,7 @@ class MovieApp {
             `;
         }
 
+        resultsContainer.style.display = 'block';
         resultsContainer.innerHTML = `
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i>
@@ -565,20 +601,17 @@ class MovieApp {
     }
 
     createMovieGrid(movies, showSimilarity = false) {
-        const grid = movies.map(movie => this.createMovieCard(movie, showSimilarity)).join('');
+        const grid = movies.map(movie => this.createMovieCard(movie)).join('');
         return `<div class="movie-grid">${grid}</div>`;
     }
 
-    createMovieCard(movie, showSimilarity = false) {
+    createMovieCard(movie) {
         const posterUrl = movie.poster_path || '';
         const rating = parseFloat(movie.rating || 0);
         const stars = this.generateStarRating(rating);
-        const similarityBadge = showSimilarity && movie.similarity_score ? 
-            `<div class="similarity-score">${Math.round(movie.similarity_score * 100)}% match</div>` : '';
 
         return `
             <div class="movie-card" data-movie='${JSON.stringify(movie)}'>
-                ${similarityBadge}
                 ${posterUrl ? 
                     `<img src="${posterUrl}" alt="${movie.title}" class="movie-poster" loading="lazy">` :
                     `<div class="movie-poster no-poster"><i class="fas fa-film"></i></div>`
@@ -634,11 +667,6 @@ class MovieApp {
                 <span class="rating-value">${rating}/10</span>
             </div>
             <p class="modal-movie-overview">${movie.overview || 'No overview available'}</p>
-            ${movie.similarity_score ? 
-                `<div style="margin-top: 1rem; padding: 1rem; background: rgba(99, 102, 241, 0.1); border-radius: var(--border-radius); border: 1px solid var(--primary-color);">
-                    <strong style="color: var(--primary-color);">Similarity Score: ${Math.round(movie.similarity_score * 100)}%</strong>
-                </div>` : ''
-            }
         `;
 
         modal.classList.add('show');
