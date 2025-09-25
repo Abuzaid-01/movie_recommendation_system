@@ -22,7 +22,7 @@ A modern, responsive movie recommendation web application built with vanilla Jav
 
 ## Live Demo
 
-🌐 **[View Live Demo](https://movie-recommendation-system-biwv.vercel.app/)**
+🌐 **[View Live Demo](https://abuzaid-01-movie-recommendation-sys.vercel.app/)**
 
 ## Local Development
 
