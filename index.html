@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Movie Recommendation System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">
+                    <i class="fas fa-film"></i>
+                    <span>CineMatch</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#search" class="nav-link">Search</a>
+                    <a href="#recommendations" class="nav-link">Recommendations</a>
+                    <a href="#trending" class="nav-link">Trending</a>
+                </nav>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Discover Your Next Favorite Movie</h1>
+                <p class="hero-subtitle">Get personalized movie recommendations based on your preferences and similar films</p>
+                <div class="hero-search">
+                    <div class="search-container">
+                        <input type="text" id="hero-search" placeholder="Search for a movie..." class="search-input">
+                        <div class="search-dropdown" id="hero-dropdown"></div>
+                        <button class="search-btn" id="hero-search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search" class="search-section">
+        <div class="container">
+            <h2 class="section-title">Search Movies</h2>
+            <div class="search-form">
+                <div class="search-container">
+                    <input type="text" id="movie-search" placeholder="Type movie name..." class="search-input">
+                    <div class="search-dropdown" id="search-dropdown"></div>
+                    <button class="search-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="recommendations-section">
+        <div class="container">
+            <h2 class="section-title">Get Recommendations</h2>
+            <div class="recommendation-form">
+                <div class="form-group">
+                    <label for="recommendation-input">Select a movie you liked:</label>
+                    <div class="search-container">
+                        <input type="text" id="recommendation-input" placeholder="Choose a movie for recommendations..." class="search-input">
+                        <div class="search-dropdown" id="recommendation-dropdown"></div>
+                        <button class="search-btn" id="recommendation-btn">
+                            <i class="fas fa-magic"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="num-recommendations">Number of recommendations:</label>
+                    <select id="num-recommendations" class="select-input">
+                        <option value="5">5 movies</option>
+                        <option value="8">8 movies</option>
+                        <option value="10">10 movies</option>
+                        <option value="15">15 movies</option>
+                    </select>
+                </div>
+            </div>
+            <div class="recommendations-results" id="recommendations-results"></div>
+        </div>
+    </section>
+
+    <!-- Trending Section -->
+    <section id="trending" class="trending-section">
+        <div class="container">
+            <h2 class="section-title">Trending Movies</h2>
+            <div class="section-tabs">
+                <button class="tab-btn active" data-tab="top-rated">Top Rated</button>
+                <button class="tab-btn" data-tab="random">Random Picks</button>
+            </div>
+            <div class="trending-results" id="trending-results"></div>
+        </div>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Movie Modal -->
+    <div class="modal" id="movie-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <div class="modal-body" id="modal-body">
+                <!-- Movie details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-film"></i>
+                        <span>CineMatch</span>
+                    </div>
+                    <p>Your personal movie recommendation system powered by machine learning.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Smart Recommendations</li>
+                        <li>Movie Search</li>
+                        <li>Trending Movies</li>
+                        <li>Rating System</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Technology</h3>
+                    <ul>
+                        <li>Machine Learning</li>
+                        <li>Content-Based Filtering</li>
+                        <li>FastAPI Backend</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CineMatch. Built by <a href="https://www.linkedin.com/in/abuzaid01" target="_blank" rel="noopener noreferrer">Abuzaid</a> with ❤️ </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
